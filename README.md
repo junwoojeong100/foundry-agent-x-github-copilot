@@ -364,6 +364,7 @@ vibe-coding/
 | RAG 시나리오에서 `Forbidden` 에러 | AI Search 서비스의 인증 모드를 확인: `az search service show --name <서비스명> --resource-group <RG>`에서 `authOptions`가 `apiKeyOnly`이면 RBAC 불가. `az search service update --name <서비스명> --resource-group <RG> --auth-options aadOrApiKey --aad-auth-failure-mode http403`으로 변경 |
 | Blob 업로드 시 권한 오류 | `--auth-mode login` 추가, 또는 스토리지 계정에 "Storage Blob Data Contributor" 역할 할당 |
 | Knowledge Base에서 스토리지 계정이 안 보임 | Foundry 프로젝트와 스토리지 계정이 같은 구독에 있는지 확인 |
+| 멀티 에이전트에서 `Concurrent executions are not allowed` | `create_workflow_agent()`에 `@st.cache_resource`가 적용되어 있지 않은지 확인. `WorkflowAgent`는 내부 실행 상태를 추적하므로 캐시 금지 — 매 요청마다 새 인스턴스 생성 필요 |
 | Windows PowerShell 실행 정책 오류 | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` 실행 후 다시 시도 |
 
 ## Foundry Agent Service SDK 지원 현황

@@ -1,10 +1,75 @@
-# Microsoft Foundry 엔터프라이즈 AI 데모
+# Foundry Agent × GitHub Copilot
 
-> **GitHub Copilot**으로 생성한 **Microsoft Foundry** 기반 엔터프라이즈 AI 에이전트 데모
->
+> **GitHub Copilot 바이브 코딩(Vibe Coding)**으로 만드는 **Microsoft Foundry** 기반 멀티 에이전트 워크플로우
+
+이 프로젝트는 **두 가지 핵심 주제**를 실전 예제로 보여주기 위해 만들어졌습니다:
+
+1. **바이브 코딩 가이드** — GitHub Copilot을 `.github/` 설정 파일로 "조종"하여, 사람이 직접 코드를 작성하지 않고 AI가 프로젝트의 기술 스택·코드 패턴·SDK 사용법을 이해하고 소스코드를 생성하도록 하는 워크플로우
+2. **멀티 에이전트 워크플로우 가이드** — Microsoft Foundry의 Agent Framework SDK를 활용하여 RAG, MCP 도구 호출, 멀티 에이전트 워크플로우를 구성하는 구현 패턴
+
+> **"코드를 직접 작성하지 않았습니다."**
+> 이 프로젝트의 모든 소스코드(`demo/app.py`, `demo/mcp_server.py` 등)는
 > `.github/` 디렉토리에 배치한 **9개의 커스텀 설정 파일**(인스트럭션·프롬프트·에이전트)만으로
-> GitHub Copilot이 프로젝트의 기술 스택·코드 패턴·SDK 사용법을 이해하고,
-> 소스코드·설정파일·MCP 도구를 직접 생성합니다.
+> GitHub Copilot이 생성한 것입니다.
+
+---
+
+## 이 프로젝트를 만든 이유
+
+엔터프라이즈 AI 도입을 검토할 때 가장 자주 듣는 두 가지 질문이 있습니다:
+
+- **"AI 코딩 어시스턴트로 실제 프로젝트를 만들 수 있나요?"** — 단순 코드 자동완성을 넘어, 프로젝트 전체를 AI가 생성·리뷰·디버깅하는 **바이브 코딩**이 실무에서 가능한지
+- **"멀티 에이전트 워크플로우를 어떻게 구성하나요?"** — RAG, 도구 호출, 에이전트 라우팅 같은 패턴을 하나의 워크플로우로 조합하는 방법
+
+이 프로젝트는 **두 질문에 대한 실전 답변**입니다. `.github/` 폴더의 9개 Markdown 파일이 "설계 문서"이자 "AI에 대한 지시서" 역할을 하고, Copilot이 그에 따라 코드를 생성합니다. 동시에 생성된 코드는 Foundry의 Agent Framework SDK로 3가지 엔터프라이즈 AI 패턴(RAG, MCP, 멀티 에이전트)을 완전한 형태로 구현합니다.
+
+---
+
+## 바이브 코딩이란?
+
+**바이브 코딩(Vibe Coding)**은 개발자가 코드를 한 줄씩 직접 작성하는 대신, **AI에게 의도와 맥락을 전달하여 코드를 생성**하게 하는 개발 방식입니다.
+
+이 프로젝트에서 바이브 코딩은 다음과 같이 동작합니다:
+
+```
+┌─────────────────────────────┐      ┌────────────────────────────┐
+│  개발자가 준비하는 것        │      │  GitHub Copilot이 하는 것    │
+│                             │      │                            │
+│  .github/                   │      │  ✅ 소스코드 생성           │
+│  ├── copilot-instructions   │ ───→ │  ✅ MCP 도구 함수 작성      │
+│  ├── instructions/ (3개)    │      │  ✅ 코드 리뷰 수행          │
+│  ├── prompts/ (3개)         │      │  ✅ 런타임 문제 진단        │
+│  └── agents/ (2개)          │      │  ✅ 기술 스택 패턴 준수      │
+│                             │      │                            │
+│  = 9개의 Markdown 파일       │      │  = 프로젝트 전체 코드        │
+└─────────────────────────────┘      └────────────────────────────┘
+```
+
+핵심은 **"무엇을 만들 것인가"와 "어떤 패턴을 따를 것인가"를 정확히 문서화**하면, AI가 일관된 품질의 코드를 생성한다는 것입니다. `.github/` 디렉토리의 9개 파일이 바로 그 문서입니다.
+
+---
+
+## 이런 분들을 위한 프로젝트입니다
+
+| 대상 | 활용 방법 |
+|------|----------|
+| **AI 코딩에 관심 있는 개발자** | `.github/` 설정 파일 구조를 참고하여 자신의 프로젝트에 바이브 코딩 워크플로우를 적용 |
+| **엔터프라이즈 AI 아키텍트** | RAG + MCP + 멀티 에이전트 워크플로우의 실전 구현 패턴을 참고 |
+| **Microsoft Foundry 입문자** | Agent Framework SDK 사용법, Foundry IQ 연동, 모델 배포까지 단계별 가이드 |
+| **기술 세미나·워크숍 진행자** | 3가지 시나리오를 라이브 데모로 시연하며 엔터프라이즈 AI 패턴 설명 |
+
+---
+
+## 주요 특징
+
+- **100% 바이브 코딩** — 모든 소스코드를 GitHub Copilot이 `.github/` 설정 파일을 참조하여 생성
+- **9개 커스텀 설정 파일** — 인스트럭션(자동 적용) · 프롬프트(수동 호출) · 에이전트(수동 호출)로 분리된 체계적 구성
+- **3가지 엔터프라이즈 AI 패턴** — RAG(문서 검색), MCP(도구 호출), 멀티 에이전트 워크플로우를 하나의 앱에서 시연
+- **실시간 스트리밍** — 토큰 단위 응답 스트리밍으로 체감 응답 속도 향상
+- **재사용 가능한 설정** — 공용 인스트럭션 3개(`python`, `azure`, `korean`)를 다른 프로젝트에 즉시 복사하여 사용 가능
+- **업종 교체 용이** — 코드 구조는 유지하고 데이터·프롬프트만 교체하여 제조·금융·의료 등 다른 업종 데모로 전환 가능
+
+---
 
 ## GitHub Copilot 커스텀 설정
 
@@ -81,11 +146,13 @@ cp .github/instructions/korean.instructions.md   <새프로젝트>/.github/instr
 
 ## 데모 시나리오
 
-| # | 시나리오 | 패턴 | 설명 |
-|---|---------|------|------|
-| 1 | **📄 사내 문서 Q&A** | RAG | Foundry IQ(Knowledge Base) 기반 문서 검색 |
-| 2 | **🔧 업무 도구 에이전트** | MCP | MCPStdioTool → mcp_server.py 연결, MCP 프로토콜로 도구 호출 |
-| 3 | **🤖 멀티 에이전트 워크플로우** | WorkflowBuilder | 분류기 → Switch 라우팅 → RAG/MCP 서브 에이전트 |
+이 프로젝트는 일반 기업 환경에서 가장 많이 사용되는 3가지 AI 패턴을 하나의 Streamlit 앱에서 시연합니다.
+
+| # | 시나리오 | AI 패턴 | 기술 스택 | 설명 |
+|---|---------|---------|----------|------|
+| 1 | **📄 사내 문서 Q&A** | RAG | `AzureAISearchContextProvider` → Foundry IQ | 사내 규정·정책 문서를 벡터+키워드 하이브리드 검색으로 조회 |
+| 2 | **🔧 업무 도구 에이전트** | MCP | `MCPStdioTool` → `mcp_server.py` (FastMCP) | 일정·이메일·업무·매출 조회/생성 도구를 MCP 프로토콜로 호출 |
+| 3 | **🤖 멀티 에이전트 워크플로우** | Multi-Agent | `WorkflowBuilder` + `AgentExecutor` + `Switch` | 분류기 → Switch 라우팅 → RAG·MCP 서브 에이전트 + BOTH 순차 파이프라인 |
 
 ### 시나리오별 예시 질문
 
@@ -106,6 +173,34 @@ cp .github/instructions/korean.instructions.md   <새프로젝트>/.github/instr
 "신규 입사자 온보딩에 필요한 정보 종합해줘"
 ```
 
+### 멀티 에이전트 워크플로우 상세
+
+시나리오 3은 이 프로젝트의 핵심으로, **에이전트 간 협업의 실전 패턴**을 보여줍니다:
+
+```
+사용자 질문
+    │
+    ▼
+① 분류기(Classifier Agent)
+    │  "RAG" / "TOOL" / "BOTH" 판별
+    ▼
+② Switch 라우팅
+    ├── RAG  ──→ RAG 에이전트 ──→ 답변
+    ├── TOOL ──→ MCP 도구 에이전트 ──→ 답변
+    └── BOTH ──→ ③ 순차 파이프라인 (add_chain)
+                    │
+                    ├── RAG 에이전트 (문서 검색)
+                    ├── MCP 도구 에이전트 (도구 실행)
+                    └── Summarizer (결과 종합)
+                            │
+                            ▼
+                        통합 답변
+```
+
+- **분류기**: 사용자 질문을 분석하여 `RAG`, `TOOL`, `BOTH` 중 하나로 라우팅
+- **Switch 라우팅**: `Case`/`Default`로 조건 분기, `BOTH`는 순차 파이프라인으로 전달
+- **순차 파이프라인**: `add_chain([RAG, Tool, Summarizer])`로 3개 에이전트를 순서대로 실행
+
 ## 설정 가이드
 
 ### 사전 요구 사항
@@ -119,8 +214,8 @@ cp .github/instructions/korean.instructions.md   <새프로젝트>/.github/instr
 
 ```bash
 # 저장소 클론
-git clone https://github.com/nicewook/vibe-coding.git
-cd vibe-coding
+git clone https://github.com/nicewook/foundry-agent-x-github-copilot.git
+cd foundry-agent-x-github-copilot
 
 # 가상환경 생성 및 활성화
 # macOS / Linux:
@@ -284,70 +379,114 @@ Blob에 문서 추가/수정 후 Knowledge Base에서 **동기화** 클릭
 
 ## 아키텍처
 
+### 전체 시스템 구성
+
 ```
-┌───────────────────────────────────────────────────────┐
-│                  Microsoft Foundry                     │
-│   ┌──────────┐   ┌──────────────┐   ┌──────────────┐ │
-│   │ GPT-5.4-2│   │ Foundry IQ   │   │ App Insights │ │
-│   │          │   │ (Knowledge   │   │              │ │
-│   │          │   │   Base)      │   │              │ │
-│   └────┬─────┘   └──────┬───────┘   └──────────────┘ │
-│        └───────┬─────────┘                            │
-│       Agent Framework SDK                             │
-└───────────────┬───────────────────────────────────────┘
-                │
-    ┌───────────┴───────────┐
-    │     Streamlit Demo     │
-    │                        │
-    │  ┌──────────────────┐  │
-    │  │🤖 WorkflowAgent  │  │  ← 시나리오 3
-    │  │ (WorkflowBuilder)│  │
-    │  └──┬──────────┬────┘  │
-    │     │ Switch   │       │
-    │  ┌──┴───┐  ┌───┴────┐  │
-    │  │📄 RAG│  │🔧 MCP  │  │  ← 시나리오 1, 2
-    │  │Agent │  │ Agent  │  │
-    │  └──┬───┘  └───┬────┘  │
-    │     │          │       │
-    │  ┌──┴────┐ ┌───┴────┐  │
-    │  │Foundry│ │ MCP    │  │
-    │  │IQ     │ │ Server │  │
-    │  │(KB)   │ │(stdio) │  │
-    │  └───────┘ └────────┘  │
-    └────────────────────────┘
+                            ┌─────────────────────────────────────────────┐
+                            │            Microsoft Foundry                │
+                            │                                             │
+                            │   ┌──────────┐   ┌──────────────────────┐  │
+                            │   │ GPT-4.1  │   │ Foundry IQ           │  │
+                            │   │ (Chat    │   │ (Knowledge Base)     │  │
+                            │   │  Model)  │   │                      │  │
+                            │   └────┬─────┘   └──────────┬───────────┘  │
+                            │        │                     │              │
+                            │        └──────┬──────────────┘              │
+                            │               │                             │
+                            │      Agent Framework SDK                    │
+                            │   (agent-framework-core)                    │
+                            └───────────────┬─────────────────────────────┘
+                                            │
+┌──────────────────┐            ┌───────────┴────────────┐
+│  .github/        │            │     Streamlit Demo      │
+│  (9개 설정 파일)  │            │     (demo/app.py)       │
+│                  │            │                         │
+│  Copilot이       │    생성    │  ┌───────────────────┐  │
+│  이 파일들을     │ ────────→  │  │🤖 WorkflowAgent   │  │  ← 시나리오 3
+│  참조하여        │            │  │ (WorkflowBuilder) │  │
+│  코드 생성       │            │  └──┬──────────┬─────┘  │
+│                  │            │     │ Switch   │        │
+│                  │            │  ┌──┴───┐  ┌───┴────┐   │
+│                  │            │  │📄 RAG│  │🔧 MCP  │   │  ← 시나리오 1, 2
+│                  │            │  │Agent │  │ Agent  │   │
+│                  │            │  └──┬───┘  └───┬────┘   │
+│                  │            │     │          │        │
+│                  │            │  ┌──┴────┐ ┌───┴─────┐  │
+│                  │            │  │Foundry│ │  MCP    │  │
+│                  │            │  │IQ(KB) │ │ Server  │  │
+│                  │            │  └───────┘ │ (stdio) │  │
+│                  │            │            └─────────┘  │
+└──────────────────┘            └─────────────────────────┘
 ```
+
+### 바이브 코딩 워크플로우
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  1. 설계: .github/ 디렉토리에 규칙 문서화                             │
+│     copilot-instructions.md  → 기술 스택, SDK 패턴, 데이터 스키마      │
+│     instructions/*.md        → Python 컨벤션, Azure 보안, 한국어 규칙  │
+│     prompts/*.md             → 도구 생성, 시나리오 추가 템플릿          │
+│     agents/*.md              → 코드 리뷰어, 트러블슈터 에이전트 정의    │
+├─────────────────────────────────────────────────────────────────────┤
+│  2. 생성: GitHub Copilot에게 자연어로 요청                             │
+│     "RAG 에이전트 만들어줘" → Copilot이 패턴에 맞는 코드 생성           │
+│     "#create-tool 매출 조회" → 프롬프트 참조하여 MCP 도구 함수 생성     │
+├─────────────────────────────────────────────────────────────────────┤
+│  3. 검증: 커스텀 에이전트로 품질 보증                                   │
+│     @reviewer → 8개 항목 체크리스트로 코드 리뷰                        │
+│     @debugger → 5단계 진단으로 런타임 문제 해결                        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+## 기술 스택
+
+| 영역 | 기술 | 역할 |
+|------|------|------|
+| **UI** | Streamlit | 채팅 인터페이스, 시나리오 선택, 실시간 스트리밍 표시 |
+| **AI Framework** | Microsoft Agent Framework (`agent-framework-core`) | 에이전트 생성, 워크플로우 빌더, MCP 도구 연결 |
+| **RAG** | `agent-framework-azure-ai-search` | `AzureAISearchContextProvider`로 Foundry IQ(Knowledge Base) 연동 |
+| **MCP** | `MCPStdioTool` + FastMCP | stdio 전송으로 로컬 MCP 서버에 연결하여 도구 호출 |
+| **멀티 에이전트** | `WorkflowBuilder` + `AgentExecutor` | Switch 라우팅, 순차 파이프라인(`add_chain`) 구성 |
+| **인증** | `azure-identity` → `DefaultAzureCredential` | Azure Entra ID 기반 인증 (로컬: `az login`, 배포: Managed Identity) |
+| **모델** | Azure AI Foundry 배포 모델 | 기본 `gpt-4.1`, 환경변수로 변경 가능 |
 
 ## 프로젝트 구조
 
 ```
-vibe-coding/
+foundry-agent-x-github-copilot/
+│
 ├── README.md
 ├── .gitignore
-├── docs/                            # 샘플 사내 문서 (Blob Storage 업로드용)
-│   ├── HR-001_연차휴가_운영규정.md
-│   ├── IT-010_원격근무_VPN_접속가이드.md
-│   ├── FIN-003_경비처리_규정.md
-│   ├── SEC-001_정보보안_관리규정.md
-│   ├── HR-015_채용_온보딩_프로세스.md
-│   └── ADM-005_회의실_예약안내.md
-├── .github/
-│   ├── copilot-instructions.md      # 프로젝트 전용 인스트럭션 (자동 적용)
-│   ├── instructions/                # ★ 공통 인스트럭션 (다른 프로젝트에도 재사용 가능)
-│   │   ├── python.instructions.md   #   Python 가상환경/코딩 컨벤션
-│   │   ├── azure.instructions.md    #   Azure 인증/환경변수/보안
-│   │   └── korean.instructions.md   #   한국어 작성 컨벤션
-│   ├── prompts/
-│   │   ├── create-tool.prompt.md    # 새 도구 함수 생성 프롬프트
-│   │   ├── add-scenario.prompt.md   # 새 시나리오 추가 프롬프트
-│   │   └── review-code.prompt.md    # 코드 리뷰 프롬프트
-│   └── agents/
-│       ├── reviewer.agent.md        # 코드 리뷰어 에이전트 (읽기 전용)
-│       └── debugger.agent.md        # 트러블슈터 에이전트 (환경/런타임 진단)
-└── demo/
-    ├── app.py              # Streamlit 데모 앱 (3개 시나리오)
-    ├── mcp_server.py       # MCP 서버 (FastMCP, 6개 업무 도구)
-    ├── requirements.txt    # 의존성
-    └── .env.example        # 환경변수 템플릿
+│
+├── .github/                             # ★ 바이브 코딩의 핵심 — Copilot 설정 파일
+│   ├── copilot-instructions.md          #   🔒 프로젝트 전체 규칙 (자동 적용)
+│   ├── instructions/                    #   🌐 파일 패턴별 자동 적용 (재사용 가능)
+│   │   ├── python.instructions.md       #     *.py → Python 컨벤션
+│   │   ├── azure.instructions.md        #     *.py → Azure 인증/보안
+│   │   └── korean.instructions.md       #     *    → 한국어 작성 규칙
+│   ├── prompts/                         #   🔒 #이름으로 수동 호출
+│   │   ├── add-scenario.prompt.md       #     새 시나리오 추가
+│   │   ├── create-tool.prompt.md        #     새 MCP 도구 생성
+│   │   └── review-code.prompt.md        #     코드 리뷰 요청
+│   └── agents/                          #   🔒 @이름으로 수동 호출
+│       ├── reviewer.agent.md            #     코드 리뷰어 (읽기 전용)
+│       └── debugger.agent.md            #     트러블슈터 (진단 + 터미널)
+│
+├── demo/                                # 데모 애플리케이션
+│   ├── app.py                           #   Streamlit 앱 (3개 시나리오)
+│   ├── mcp_server.py                    #   MCP 서버 (FastMCP, 6개 업무 도구)
+│   ├── mock_data.json                   #   시뮬레이션 데이터 (3~12월 월별)
+│   ├── requirements.txt                 #   Python 의존성
+│   └── .env.example                     #   환경변수 템플릿
+│
+└── docs/                                # 샘플 사내 문서 (RAG용, Blob Storage 업로드)
+    ├── HR-001_연차휴가_운영규정.md
+    ├── HR-015_채용_온보딩_프로세스.md
+    ├── IT-010_원격근무_VPN_접속가이드.md
+    ├── FIN-003_경비처리_규정.md
+    ├── SEC-001_정보보안_관리규정.md
+    └── ADM-005_회의실_예약안내.md
 ```
 
 ## 트러블슈팅
@@ -380,6 +519,31 @@ vibe-coding/
 | **MCP 도구 (로컬)** | ✅ `MCPStdioTool` (로컬 subprocess) | ❌ `McpTool` (원격 URL만 지원) | 로컬 stdio 연결 불가 |
 
 > ⚠️ 위 기능들은 **Foundry Portal(UI)**에서는 일부 지원되지만, **Python SDK**에는 아직 반영되지 않은 상태입니다. (2026년 3월 기준, `azure-ai-agents==1.2.0b5`)
+
+## 이 프로젝트에서 배울 수 있는 것
+
+### 바이브 코딩 (GitHub Copilot 커스터마이징)
+
+| 주제 | 배울 수 있는 내용 | 참고 파일 |
+|------|-------------------|----------|
+| **글로벌 인스트럭션** | 프로젝트 전체에 적용되는 기술 스택·코드 패턴·SDK 사용법 정의 | `.github/copilot-instructions.md` |
+| **파일 패턴 인스트럭션** | `applyTo`로 특정 파일 유형에만 자동 적용되는 규칙 작성 | `.github/instructions/*.md` |
+| **재사용 프롬프트** | 반복 작업(도구 추가, 시나리오 추가)을 템플릿화하여 `#이름`으로 호출 | `.github/prompts/*.md` |
+| **커스텀 에이전트** | 코드 리뷰어·트러블슈터 등 역할별 AI 에이전트를 `@이름`으로 호출 | `.github/agents/*.md` |
+| **공용 vs. 전용 분리** | 재사용 가능한 공통 규칙과 프로젝트 종속 규칙을 분리하는 전략 | README 내 재사용 범위 표 |
+
+### 멀티 에이전트 워크플로우 (Microsoft Foundry)
+
+| 주제 | 배울 수 있는 내용 | 참고 코드 |
+|------|-------------------|----------|
+| **RAG 패턴** | Foundry IQ(Knowledge Base) + `AzureAISearchContextProvider` 연동 | `demo/app.py` — `create_rag_agent()` |
+| **MCP 도구 호출** | `MCPStdioTool`로 FastMCP 서버에 stdio 연결, 도구 정의 방법 | `demo/mcp_server.py` |
+| **워크플로우 빌더** | `WorkflowBuilder` + `AgentExecutor` + `Case`/`Default`로 에이전트 그래프 구성 | `demo/app.py` — `create_workflow_agent()` |
+| **순차 파이프라인** | `add_chain()`으로 RAG → Tool → Summarizer 순서 실행 | `demo/app.py` — BOTH 경로 |
+| **비동기/스트리밍** | Streamlit 동기 환경에서 비동기 에이전트를 스트리밍으로 실행하는 패턴 | `demo/app.py` — `stream_agent()` |
+| **Streamlit 캐싱** | `@st.cache_resource` 적용 대상과 `WorkflowAgent` 캐시 금지 사유 | `demo/app.py` |
+
+---
 
 ## 커스터마이징 가이드
 
@@ -419,7 +583,23 @@ Foundry Agent Service SDK(`azure-ai-agents`)가 멀티 에이전트 워크플로
 
 ## 참고 자료
 
+### Microsoft Foundry & Agent Framework
+
 - [Microsoft Foundry 공식 문서](https://learn.microsoft.com/azure/ai-foundry/)
 - [Microsoft Agent Framework (GitHub)](https://github.com/microsoft/agent-framework)
 - [Azure AI Search — RAG 패턴](https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview)
-- [MCP (Model Context Protocol) 사양](https://modelcontextprotocol.io/)
+
+### GitHub Copilot 커스텀 설정
+
+- [Copilot Instructions 공식 문서](https://docs.github.com/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot)
+- [Copilot Prompt Files 공식 문서](https://docs.github.com/copilot/customizing-copilot/adding-repository-prompt-files-for-github-copilot)
+- [Copilot Agent Mode 공식 문서](https://docs.github.com/copilot/using-github-copilot/using-copilot-coding-agent)
+
+### MCP (Model Context Protocol)
+
+- [MCP 사양](https://modelcontextprotocol.io/)
+- [FastMCP (Python)](https://github.com/jlowin/fastmcp)
+
+## 라이선스
+
+MIT License — 자세한 내용은 [LICENSE](LICENSE) 파일을 참고하세요.

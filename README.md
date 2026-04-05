@@ -214,8 +214,8 @@ cp .github/instructions/korean.instructions.md   <새프로젝트>/.github/instr
 
 ```bash
 # 저장소 클론
-git clone https://github.com/nicewook/foundry-agent-x-github-copilot.git
-cd foundry-agent-x-github-copilot
+git clone https://github.com/junwoojeong100/github-copilot-foundry-agent-workflow.git
+cd github-copilot-foundry-agent-workflow
 
 # 가상환경 생성 및 활성화
 # macOS / Linux:
@@ -454,7 +454,7 @@ Blob에 문서 추가/수정 후 Knowledge Base에서 **동기화** 클릭
 ## 프로젝트 구조
 
 ```
-foundry-agent-x-github-copilot/
+github-copilot-foundry-agent-workflow/
 │
 ├── README.md
 ├── .gitignore

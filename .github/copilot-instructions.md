@@ -1,6 +1,6 @@
 # 프로젝트 글로벌 인스트럭션
 
-<!-- 🔒 프로젝트 전용: 이 프로젝트(foundry-agent-x-github-copilot)에만 해당하는 규칙입니다. 다른 프로젝트에 복사하지 마세요. -->
+<!-- 🔒 프로젝트 전용: 이 프로젝트(github-copilot-foundry-agent-workflow)에만 해당하는 규칙입니다. 다른 프로젝트에 복사하지 마세요. -->
 
 > 공통 규칙(Python 컨벤션, Azure 인증, 한국어 작성)은 `.github/instructions/` 아래 파일에서 관리합니다.
 > 이 파일에는 **이 프로젝트에만 해당하는 규칙**을 작성합니다.

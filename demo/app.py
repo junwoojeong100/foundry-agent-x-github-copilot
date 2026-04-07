@@ -68,12 +68,18 @@ def _get_event_loop():
 
 
 @st.cache_resource
+def _get_credential():
+    """DefaultAzureCredential 싱글턴 (인증 객체 재사용)"""
+    return DefaultAzureCredential()
+
+
+@st.cache_resource
 def get_ai_client():
     """AzureAIAgentClient 싱글턴"""
     return AzureAIAgentClient(
         project_endpoint=PROJECT_ENDPOINT,
         model_deployment_name=MODEL,
-        credential=DefaultAzureCredential(),
+        credential=_get_credential(),
     )
 
 
@@ -90,7 +96,7 @@ def _get_kb_context_provider():
         return None
     return AzureAISearchContextProvider(
         knowledge_base_name=KNOWLEDGE_BASE_NAME,
-        credential=DefaultAzureCredential(),
+        credential=_get_credential(),
         mode="agentic",
         top_k=3,
         retrieval_reasoning_effort="low",

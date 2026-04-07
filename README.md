@@ -64,7 +64,7 @@
 ## 주요 특징
 
 - **100% 바이브 코딩** — 모든 소스코드를 GitHub Copilot이 `.github/` 설정 파일을 참조하여 생성
-- **11개 커스텀 설정 파일** — 인스트럭션(자동 적용) · 프롬프트(수동 호출) · 에이전트(수동 호출) · 스킬(필요 시 자동 로드)로 분리된 체계적 구성
+- **11개 커스텀 설정 파일** — 인스트럭션(자동 적용) · 프롬프트(수동 호출) · 에이전트(수동 호출) · 스킬(자동 로드 + 수동 호출)로 분리된 체계적 구성
 - **3가지 엔터프라이즈 AI 패턴** — RAG(문서 검색), MCP(도구 호출), 멀티 에이전트 워크플로우를 하나의 앱에서 시연
 - **실시간 스트리밍** — 토큰 단위 응답 스트리밍으로 체감 응답 속도 향상
 - **재사용 가능한 설정** — 공용 인스트럭션 3개(`python`, `azure`, `korean`)를 다른 프로젝트에 즉시 복사하여 사용 가능
@@ -83,8 +83,8 @@
 |----------|------|----------|----------|
 | **글로벌 인스트럭션** | `.github/copilot-instructions.md` | 없음 | ✅ 자동 — 모든 Copilot 요청에 항상 포함 |
 | **파일 패턴 인스트럭션** | `.github/instructions/*.instructions.md` | 없음 | ✅ 자동 — `applyTo` 패턴에 매칭되는 파일 작업 시 포함 |
-| **스킬** | `.github/skills/*/SKILL.md` | 없음 | ✅ 자동 — 관련 주제 감지 시 필요한 스킬만 로드 |
-| **재사용 프롬프트** | `.github/prompts/*.prompt.md` | 채팅에서 `#파일명` 입력 | 🔘 수동 |
+| **스킬** | `.github/skills/*/SKILL.md` | 채팅에서 `/스킬명` 입력 | ✅ 자동 + 🔘 수동 — 관련 주제 감지 시 자동 로드, `/스킬명`으로 명시적 호출도 가능 |
+| **재사용 프롬프트** | `.github/prompts/*.prompt.md` | 채팅에서 `/프롬프트명` 입력 | 🔘 수동 |
 | **커스텀 에이전트** | `.github/agents/*.agent.md` | 채팅에서 `@에이전트명` 입력 | 🔘 수동 |
 
 ### 재사용 범위: 프로젝트 전용 🔒 vs. 공용 🌐
@@ -125,16 +125,16 @@
 │   ├── azure.instructions.md        ← *.py 편집 시 자동
 │   └── korean.instructions.md       ← 모든 파일 편집 시 자동
 │
-├── skills/                          ← 🔒 관련 주제 감지 시 자동 로드
+├── skills/                          ← 🔒 자동 로드 + /이름으로 수동 호출
 │   ├── agent-framework-codegen/     ← Agent Framework SDK 코드 생성 시
 │   │   └── SKILL.md
 │   └── foundry-agent-v2-migration/  ← SDK v2 마이그레이션 시
 │       └── SKILL.md
 │
-├── prompts/                         ← 🔒 #이름으로 수동 호출
-│   ├── add-scenario.prompt.md       ← #add-scenario
-│   ├── create-tool.prompt.md        ← #create-tool
-│   └── review-code.prompt.md        ← #review-code
+├── prompts/                         ← 🔒 /이름으로 수동 호출
+│   ├── add-scenario.prompt.md       ← /add-scenario
+│   ├── create-tool.prompt.md        ← /create-tool
+│   └── review-code.prompt.md        ← /review-code
 │
 └── agents/                          ← 🔒 @이름으로 수동 호출
     ├── reviewer.agent.md            ← @reviewer (읽기 전용)
@@ -442,7 +442,7 @@ Blob에 문서 추가/수정 후 Knowledge Base에서 **동기화** 클릭
 ├─────────────────────────────────────────────────────────────────────┤
 │  2. 생성: GitHub Copilot에게 자연어로 요청                             │
 │     "RAG 에이전트 만들어줘" → Copilot이 패턴에 맞는 코드 생성           │
-│     "#create-tool 매출 조회" → 프롬프트 참조하여 MCP 도구 함수 생성     │
+│     "/create-tool 매출 조회" → 프롬프트 참조하여 MCP 도구 함수 생성     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  3. 검증: 커스텀 에이전트로 품질 보증                                   │
 │     @reviewer → 8개 항목 체크리스트로 코드 리뷰                        │
@@ -476,12 +476,12 @@ github-copilot-foundry-agent-workflow/
 │   │   ├── python.instructions.md       #     *.py → Python 컨벤션
 │   │   ├── azure.instructions.md        #     *.py → Azure 인증/보안
 │   │   └── korean.instructions.md       #     *    → 한국어 작성 규칙
-│   ├── skills/                          #   🔒 관련 주제 감지 시 자동 로드
+│   ├── skills/                          #   🔒 자동 로드 + /이름으로 수동 호출
 │   │   ├── agent-framework-codegen/     #     Agent Framework SDK 코드 생성
 │   │   │   └── SKILL.md
 │   │   └── foundry-agent-v2-migration/  #     SDK v2 마이그레이션 가이드
 │   │       └── SKILL.md
-│   ├── prompts/                         #   🔒 #이름으로 수동 호출
+│   ├── prompts/                         #   🔒 /이름으로 수동 호출
 │   │   ├── add-scenario.prompt.md       #     새 시나리오 추가
 │   │   ├── create-tool.prompt.md        #     새 MCP 도구 생성
 │   │   └── review-code.prompt.md        #     코드 리뷰 요청
@@ -544,9 +544,9 @@ github-copilot-foundry-agent-workflow/
 |------|-------------------|----------|
 | **글로벌 인스트럭션** | 프로젝트 전체에 적용되는 기술 스택·코드 패턴·SDK 사용법 정의 | `.github/copilot-instructions.md` |
 | **파일 패턴 인스트럭션** | `applyTo`로 특정 파일 유형에만 자동 적용되는 규칙 작성 | `.github/instructions/*.md` |
-| **재사용 프롬프트** | 반복 작업(도구 추가, 시나리오 추가)을 템플릿화하여 `#이름`으로 호출 | `.github/prompts/*.md` |
+| **재사용 프롬프트** | 반복 작업(도구 추가, 시나리오 추가)을 템플릿화하여 `/이름`으로 호출 | `.github/prompts/*.md` |
 | **커스텀 에이전트** | 코드 리뷰어·트러블슈터 등 역할별 AI 에이전트를 `@이름`으로 호출 | `.github/agents/*.md` |
-| **커스텀 스킬** | SDK 코드 생성, 마이그레이션 가이드 등 도메인 지식을 필요 시 자동 로드 | `.github/skills/*/SKILL.md` |
+| **커스텀 스킬** | SDK 코드 생성, 마이그레이션 가이드 등 도메인 지식을 자동 로드 또는 `/스킬명`으로 명시적 호출 | `.github/skills/*/SKILL.md` |
 | **공용 vs. 전용 분리** | 재사용 가능한 공통 규칙과 프로젝트 종속 규칙을 분리하는 전략 | README 내 재사용 범위 표 |
 
 ### 멀티 에이전트 워크플로우 (Microsoft Foundry)

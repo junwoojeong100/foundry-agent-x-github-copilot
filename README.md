@@ -140,7 +140,7 @@ copilot
 | `instructions/*.instructions.md` | ✅ 자동 | Python 컨벤션, Azure 보안, 한국어 규칙이 자동 적용 |
 | `skills/*/SKILL.md` | ✅ `/skills` | SDK 코드 생성·마이그레이션 패턴을 명시적으로 참조 가능 |
 | `prompts/*.prompt.md` | ⚠️ 직접 호출 불가 | 프롬프트 내용을 자연어로 풀어서 요청 (예: "새 MCP 도구를 create-tool 프롬프트 패턴으로 만들어줘") |
-| `agents/*.agent.md` | ⚠️ 직접 호출 불가 | 에이전트 역할을 자연어로 지시 (예: "코드 리뷰어 관점에서 이 변경사항 검토해줘") |
+| `agents/*.agent.md` | ✅ `/agent` | `/agent` 명령으로 에이전트를 선택·전환하여 사용 (예: reviewer, debugger) |
 
 > **핵심**: `copilot-instructions.md`와 `instructions/` 3개 파일은 **IDE와 CLI 모두에서 자동 적용**됩니다. 이 4개 파일만으로도 프로젝트의 기술 스택·컨벤션·보안 규칙이 일관되게 반영됩니다.
 

@@ -1,4 +1,4 @@
-# Foundry Agent × GitHub Copilot
+# GitHub Copilot 바이브 코딩으로 만드는 Microsoft Foundry 멀티 에이전트
 
 > **GitHub Copilot 바이브 코딩(Vibe Coding)**으로 만드는 **Microsoft Foundry** 기반 멀티 에이전트 워크플로우
 
@@ -633,9 +633,9 @@ github-copilot-foundry-agent-workflow/
 
 ## Foundry Agent Service SDK 지원 현황
 
-> **참고**: 이 데모는 **Microsoft Agent Framework**(`agent-framework-core`)를 사용합니다.
-> Foundry Agent Service SDK(`azure-ai-agents`)는 아래 기능이 아직 SDK에서 지원되지 않아 사용하지 않습니다.
-> 해당 기능이 GA되면 Foundry Agent Service 기반 시나리오를 추가할 예정입니다.
+> **참고**: 이 데모의 멀티 에이전트 워크플로우는 **Microsoft Agent Framework**(`agent-framework-core`)로 구성했습니다.
+> **Microsoft Foundry의 멀티 에이전트 워크플로우(Foundry Agent Service)는 현재 Public Preview 단계**이고, **Microsoft Agent Framework은 이미 GA**되어 있어 프로덕션 수준의 안정성을 제공하기 때문입니다.
+> 또한 Foundry Agent Service SDK(`azure-ai-agents`)는 아래 기능이 아직 SDK에서 지원되지 않습니다. 해당 기능이 GA되면 Foundry Agent Service 기반 시나리오를 추가할 예정입니다.
 
 | 기능 | Agent Framework | Foundry Agent Service SDK | 비고 |
 |------|:---:|:---:|------|
